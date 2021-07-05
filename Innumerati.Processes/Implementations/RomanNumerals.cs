@@ -29,8 +29,16 @@ namespace Innumerati.Processes.Implementations
 
         public string IntToNumeral(int input)
         {
-            var x = Numerals.FirstOrDefault(x => x.Value == input).Key;
-            return x;
+            var working = input;
+            string output = string.Empty;
+
+            while (working > 0)
+            {
+                var temp = GetLargestFittingNumeral(working);
+                output += temp;
+                working -= Numerals[temp];
+            }
+            return output;
         }
 
         public int NumeralToInt(string input)
