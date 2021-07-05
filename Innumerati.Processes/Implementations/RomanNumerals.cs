@@ -27,6 +27,12 @@ namespace Innumerati.Processes.Implementations
             return x;
         }
 
+        public int NumeralToInt(string input)
+        {
+            var x = Numerals[input];
+            return x;
+        }
+
         /// <summary>
         /// Initializes the default values
         /// </summary>

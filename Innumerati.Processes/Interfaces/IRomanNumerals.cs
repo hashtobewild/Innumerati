@@ -7,5 +7,7 @@ namespace Innumerati.Processes.Interfaces
         Dictionary<string, int> Numerals { get; set; }
 
         string IntToNumeral(int input);
+
+        int NumeralToInt(string input);
     }
 }

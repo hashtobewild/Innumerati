@@ -27,6 +27,19 @@ namespace Innumerati.Tests
         }
 
         [Test]
+        [TestCase("I", 1)]
+        [TestCase("V", 5)]
+        [TestCase("X", 10)]
+        [TestCase("L", 50)]
+        [TestCase("C", 100)]
+        [TestCase("D", 500)]
+        [TestCase("M", 1000)]
+        public void TestBasicNumeralToInt_ReturnsExactMatchedIntegrals(string input, int expected)
+        {
+            Assert.AreEqual(expected, _processor.NumeralToInt(input));
+        }
+
+        [Test]
         public void TestListBaseValues_DefaultFactory_ReturnsCountOfKnownNumerals()
         {
             Assert.AreEqual(7, _processor.Numerals.Count);
