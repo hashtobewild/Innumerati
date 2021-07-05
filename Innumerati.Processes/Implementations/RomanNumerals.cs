@@ -27,7 +27,12 @@ namespace Innumerati.Processes.Implementations
             return x;
         }
 
-        public string IntToNumeral(int input)
+        /// <summary>
+        /// Convert integers to roman numerals.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The roman numeral string that represents the integer</returns>
+        public string IntToNumerals(int input)
         {
             var working = input;
             string output = string.Empty;
@@ -41,7 +46,12 @@ namespace Innumerati.Processes.Implementations
             return output;
         }
 
-        public int NumeralToInt(string input)
+        /// <summary>
+        /// Convert roman numerals to integers.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The integer represented by the input roman numerals</returns>
+        public int NumeralsToInt(string input)
         {
             // Add character items to a FIFO queue
             Queue<char> queue = new Queue<char>(input.ToCharArray());

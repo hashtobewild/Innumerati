@@ -35,7 +35,7 @@ namespace Innumerati.Tests
         [TestCase(2000, "MM")]
         public void TestBasicIntToNumeral_ReturnsExactMatchedNumerals(int input, string expected)
         {
-            Assert.AreEqual(expected, _processor.IntToNumeral(input));
+            Assert.AreEqual(expected, _processor.IntToNumerals(input));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace Innumerati.Tests
         [TestCase("MM", 2000)]
         public void TestBasicNumeralToInt_ReturnsExactMatchedIntegrals(string input, int expected)
         {
-            Assert.AreEqual(expected, _processor.NumeralToInt(input));
+            Assert.AreEqual(expected, _processor.NumeralsToInt(input));
         }
 
         [TestCase(1, "I")]

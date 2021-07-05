@@ -8,8 +8,8 @@ namespace Innumerati.Processes.Interfaces
 
         string GetLargestFittingNumeral(int input);
 
-        string IntToNumeral(int input);
+        string IntToNumerals(int input);
 
-        int NumeralToInt(string input);
+        int NumeralsToInt(string input);
     }
 }
