@@ -47,6 +47,61 @@ namespace Innumerati.Processes.Implementations
         }
 
         /// <summary>
+        /// Determines whether the input is a valid roman numeral string.
+        /// Validations from: https://www.cuemath.com/numbers/roman-numerals/ (Rules for Writing Roman Numerals)
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>
+        ///   <c>true</c> if [is valid roman numeral] [the specified input]; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsValidRomanNumeral(string input)
+        {
+            // Expanded notation for clarity
+            if (!string.IsNullOrEmpty(input))
+            {
+                var workingString = input.ToUpperInvariant();
+                var workingArray = workingString.ToCharArray();
+
+                // Only includes known characters
+                if (workingArray.All(x => Numerals.ContainsKey(CharToString(x))))
+                {
+                    if (
+                        // L,V,D cannot repeat:
+                        workingString.Count(x => x == 'L') <= 1
+                        && workingString.Count(x => x == 'V') <= 1
+                        && workingString.Count(x => x == 'D') <= 1
+                        // I,X,C can be repeated max 3 times
+                        && workingString.Count(x => x == 'I') <= 3
+                        && workingString.Count(x => x == 'X') <= 3
+                        && workingString.Count(x => x == 'C') <= 3
+                        )
+                    {
+                        // Values must decrease (additive) except I,X,C which can be subtracive
+                        string[] subtractives = new string[] { "I", "X", "C" };
+                        // Assume true, unless proven false
+                        bool charsValid = true;
+
+                        for (int i = 0; i < workingArray.Length; i++)
+                        {
+                            if (i + 1 < workingArray.Length)
+                            {
+                                var currentValue = Numerals[CharToString(workingArray[i])];
+                                var nextNextValue = Numerals[CharToString(workingArray[i + 1])];
+
+                                if (currentValue < nextNextValue && !subtractives.Contains(CharToString(workingArray[i])))
+                                {
+                                    charsValid = false;
+                                }
+                            }
+                        }
+                        return charsValid;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Convert roman numerals to integers.
         /// </summary>
         /// <param name="input">The input.</param>
@@ -60,10 +115,15 @@ namespace Innumerati.Processes.Implementations
             int workingValue = 0;
             while (queue.TryDequeue(out workingChar))
             {
-                var working = new string(new char[] { workingChar });
+                var working = CharToString(workingChar);
                 workingValue += Numerals[working];
             }
             return workingValue;
+        }
+
+        private string CharToString(char input)
+        {
+            return new string(new char[] { input });
         }
 
         /// <summary>

@@ -84,5 +84,25 @@ namespace Innumerati.Tests
         {
             Assert.AreEqual(7, _processor.Numerals.Count);
         }
+
+        [Test]
+        [TestCase("I", true)]
+        [TestCase("II", true)]
+        [TestCase("III", true)]
+        [TestCase("IV", true)]
+        [TestCase("IIII", false)]
+        [TestCase("V", true)]
+        [TestCase("VV", false)]
+        [TestCase("X", true)]
+        [TestCase("L", true)]
+        [TestCase("LL", false)]
+        [TestCase("C", true)]
+        [TestCase("D", true)]
+        [TestCase("DD", false)]
+        [TestCase("M", true)]
+        public void TestValidRomanNumeralString_ReturnsWhetherARomanNumeralStringIsValid(string input, bool expected)
+        {
+            Assert.AreEqual(expected, _processor.IsValidRomanNumeral(input));
+        }
     }
 }
