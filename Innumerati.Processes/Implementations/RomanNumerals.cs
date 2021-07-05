@@ -1,11 +1,12 @@
 ﻿using Innumerati.Processes.Interfaces;
-using System.Collections.Specialized;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Innumerati.Processes.Implementations
 {
     public class RomanNumerals : IRomanNumerals
     {
-        private OrderedDictionary _numerals;
+        private Dictionary<string, int> _numerals;
 
         public RomanNumerals()
         {
@@ -14,27 +15,32 @@ namespace Innumerati.Processes.Implementations
 
         /// <summary>
         /// Gets or sets the numerals that are known to the application.
-        /// The numerals are stored in an ordered dictionary, as it can be accessed by key, value and enumerator
         /// </summary>
         /// <value>
         /// The numerals.
         /// </value>
-        public OrderedDictionary Numerals { get => _numerals; set => _numerals = value; }
+        public Dictionary<string, int> Numerals { get => _numerals; set => _numerals = value; }
+
+        public string IntToNumeral(int input)
+        {
+            var x = Numerals.FirstOrDefault(x => x.Value == input).Key;
+            return x;
+        }
 
         /// <summary>
         /// Initializes the default values
         /// </summary>
         private void DefaultFactory()
         {
-            Numerals = new OrderedDictionary()
+            Numerals = new Dictionary<string, int>()
             {
-                {'I', 1},
-                {'V', 5},
-                {'X', 10},
-                {'L', 50},
-                {'C', 100},
-                {'D', 500},
-                {'M', 1000},
+                {"I", 1},
+                {"V", 5},
+                {"X", 10},
+                {"L", 50},
+                {"C", 100},
+                {"D", 500},
+                {"M", 1000},
             };
         }
     }

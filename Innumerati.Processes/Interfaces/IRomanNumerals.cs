@@ -1,9 +1,11 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
 
 namespace Innumerati.Processes.Interfaces
 {
     internal interface IRomanNumerals
     {
-        OrderedDictionary Numerals { get; set; }
+        Dictionary<string, int> Numerals { get; set; }
+
+        string IntToNumeral(int input);
     }
 }
