@@ -10,6 +10,8 @@ namespace Innumerati.Processes.Interfaces
 
         string IntToNumerals(int input);
 
+        bool IsValidRomanNumeral(string input);
+
         int NumeralsToInt(string input);
     }
 }

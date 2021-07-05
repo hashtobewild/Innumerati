@@ -43,6 +43,12 @@ namespace Innumerati.Processes.Implementations
                 output += temp;
                 working -= Numerals[temp];
             }
+
+            // Sanity check
+            if (!IsValidRomanNumeral(output))
+            {
+                throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
+            }
             return output;
         }
 
@@ -56,7 +62,6 @@ namespace Innumerati.Processes.Implementations
         /// </returns>
         public bool IsValidRomanNumeral(string input)
         {
-            // Expanded notation for clarity
             if (!string.IsNullOrEmpty(input))
             {
                 var workingString = input.ToUpperInvariant();
@@ -65,36 +70,9 @@ namespace Innumerati.Processes.Implementations
                 // Only includes known characters
                 if (workingArray.All(x => Numerals.ContainsKey(CharToString(x))))
                 {
-                    if (
-                        // L,V,D cannot repeat:
-                        workingString.Count(x => x == 'L') <= 1
-                        && workingString.Count(x => x == 'V') <= 1
-                        && workingString.Count(x => x == 'D') <= 1
-                        // I,X,C can be repeated max 3 times
-                        && workingString.Count(x => x == 'I') <= 3
-                        && workingString.Count(x => x == 'X') <= 3
-                        && workingString.Count(x => x == 'C') <= 3
-                        )
+                    if (IsValidNumeralOccurance(workingString))
                     {
-                        // Values must decrease (additive) except I,X,C which can be subtracive
-                        string[] subtractives = new string[] { "I", "X", "C" };
-                        // Assume true, unless proven false
-                        bool charsValid = true;
-
-                        for (int i = 0; i < workingArray.Length; i++)
-                        {
-                            if (i + 1 < workingArray.Length)
-                            {
-                                var currentValue = Numerals[CharToString(workingArray[i])];
-                                var nextNextValue = Numerals[CharToString(workingArray[i + 1])];
-
-                                if (currentValue < nextNextValue && !subtractives.Contains(CharToString(workingArray[i])))
-                                {
-                                    charsValid = false;
-                                }
-                            }
-                        }
-                        return charsValid;
+                        return IsValidNumeralOrdering(workingArray);
                     }
                 }
             }
@@ -108,6 +86,11 @@ namespace Innumerati.Processes.Implementations
         /// <returns>The integer represented by the input roman numerals</returns>
         public int NumeralsToInt(string input)
         {
+            if (!IsValidRomanNumeral(input))
+            {
+                throw new System.InvalidOperationException("Invalid Roman Numeral String");
+            }
+
             // Add character items to a FIFO queue
             Queue<char> queue = new Queue<char>(input.ToCharArray());
 
@@ -121,13 +104,18 @@ namespace Innumerati.Processes.Implementations
             return workingValue;
         }
 
+        /// <summary>
+        /// Utility to generate a string from a character
+        /// </summary>
+        /// <param name="input">The input character.</param>
+        /// <returns>A string made up of that character</returns>
         private string CharToString(char input)
         {
             return new string(new char[] { input });
         }
 
         /// <summary>
-        /// Initializes the default values
+        /// Initializes the default values /set initial state
         /// </summary>
         private void DefaultFactory()
         {
@@ -141,6 +129,42 @@ namespace Innumerati.Processes.Implementations
                 {"D", 500},
                 {"M", 1000},
             };
+        }
+
+        private bool IsValidNumeralOccurance(string input)
+        {
+            return
+                // L,V,D cannot repeat:
+                input.Count(x => x == 'L') <= 1
+                && input.Count(x => x == 'V') <= 1
+                && input.Count(x => x == 'D') <= 1
+                // I,X,C can be repeated max 3 times
+                && input.Count(x => x == 'I') <= 3
+                && input.Count(x => x == 'X') <= 3
+                && input.Count(x => x == 'C') <= 3;
+        }
+
+        private bool IsValidNumeralOrdering(char[] inputArray)
+        {
+            // Values must decrease (additive) except I,X,C which can be subtracive
+            string[] subtractives = new string[] { "I", "X", "C" };
+            // Assume true, unless proven false
+            bool charsValid = true;
+
+            for (int i = 0; i < inputArray.Length; i++)
+            {
+                if (i + 1 < inputArray.Length)
+                {
+                    var currentValue = Numerals[CharToString(inputArray[i])];
+                    var nextNextValue = Numerals[CharToString(inputArray[i + 1])];
+
+                    if (currentValue < nextNextValue && !subtractives.Contains(CharToString(inputArray[i])))
+                    {
+                        charsValid = false;
+                    }
+                }
+            }
+            return charsValid;
         }
     }
 }
