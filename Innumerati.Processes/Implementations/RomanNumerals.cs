@@ -21,6 +21,12 @@ namespace Innumerati.Processes.Implementations
         /// </value>
         public Dictionary<string, int> Numerals { get => _numerals; set => _numerals = value; }
 
+        public string GetLargestFittingNumeral(int input)
+        {
+            var x = Numerals.Where(x => x.Value <= input).OrderByDescending(x => x.Value).First().Key;
+            return x;
+        }
+
         public string IntToNumeral(int input)
         {
             var x = Numerals.FirstOrDefault(x => x.Value == input).Key;
