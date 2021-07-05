@@ -25,6 +25,7 @@ namespace Innumerati.Tests
         [TestCase(40, "XXXX")]
         [TestCase(50, "L")]
         [TestCase(55, "LV")]
+        [TestCase(90, "LXXXX")]
         [TestCase(100, "C")]
         [TestCase(200, "CC")]
         [TestCase(500, "D")]
@@ -39,12 +40,20 @@ namespace Innumerati.Tests
 
         [Test]
         [TestCase("I", 1)]
+        [TestCase("II", 2)]
+        [TestCase("IIII", 4)]
         [TestCase("V", 5)]
+        [TestCase("VI", 6)]
         [TestCase("X", 10)]
+        [TestCase("XI", 11)]
         [TestCase("L", 50)]
+        [TestCase("LX", 60)]
+        [TestCase("LXXXX", 90)]
         [TestCase("C", 100)]
+        [TestCase("CC", 200)]
         [TestCase("D", 500)]
         [TestCase("M", 1000)]
+        [TestCase("MM", 2000)]
         public void TestBasicNumeralToInt_ReturnsExactMatchedIntegrals(string input, int expected)
         {
             Assert.AreEqual(expected, _processor.NumeralToInt(input));
