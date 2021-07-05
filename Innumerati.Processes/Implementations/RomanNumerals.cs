@@ -43,19 +43,13 @@ namespace Innumerati.Processes.Implementations
 
         public int NumeralToInt(string input)
         {
-            var numerals = input.ToCharArray();
-            Queue<char> queue = new Queue<char>();
-            // Add items to a FIFO queue
-            for (int i = 0; i < numerals.Length; i++)
-            {
-                queue.Enqueue(numerals[i]);
-            }
+            // Add character items to a FIFO queue
+            Queue<char> queue = new Queue<char>(input.ToCharArray());
 
             char workingChar;
             int workingValue = 0;
             while (queue.TryDequeue(out workingChar))
             {
-                // First
                 var working = new string(new char[] { workingChar });
                 workingValue += Numerals[working];
             }
