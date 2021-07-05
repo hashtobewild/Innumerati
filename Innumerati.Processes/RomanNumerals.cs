@@ -2,7 +2,7 @@
 
 namespace Innumerati.Processes
 {
-    public class Class1
+    public class RomanNumerals
     {
     }
 }
