@@ -24,9 +24,14 @@ namespace Innumerati.Tests
         [TestCase(15, "XV")]
         [TestCase(40, "XXXX")]
         [TestCase(50, "L")]
+        [TestCase(55, "LV")]
         [TestCase(100, "C")]
+        [TestCase(200, "CC")]
         [TestCase(500, "D")]
+        [TestCase(550, "DL")]
+        [TestCase(650, "DCL")]
         [TestCase(1000, "M")]
+        [TestCase(2000, "MM")]
         public void TestBasicIntToNumeral_ReturnsExactMatchedNumerals(int input, string expected)
         {
             Assert.AreEqual(expected, _processor.IntToNumeral(input));
