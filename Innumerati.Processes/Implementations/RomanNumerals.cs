@@ -216,6 +216,13 @@ namespace Innumerati.Processes.Implementations
             return new string(new char[] { input });
         }
 
+        /// <summary>
+        /// Contiguouses the character maximum check to ensure that a character does not exceed the max number of contiguous repetitions.
+        /// </summary>
+        /// <param name="haystack">The haystack.</param>
+        /// <param name="input">The input.</param>
+        /// <param name="count">The count.</param>
+        /// <returns></returns>
         private bool ContiguousCharMaxCheck(string haystack, char input, int count)
         {
             bool output = true;
