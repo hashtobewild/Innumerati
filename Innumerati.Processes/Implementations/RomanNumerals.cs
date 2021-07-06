@@ -22,18 +22,22 @@ namespace Innumerati.Processes.Implementations
         /// </value>
         public Dictionary<string, int> Numerals { get => _numerals; set => _numerals = value; }
 
+        /// <summary>
+        /// Gets the largest numeral that is smaller than or equal to the input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
         public string GetLargestFittingNumeral(int input)
         {
             var x = Numerals.Where(x => x.Value <= input).OrderByDescending(x => x.Value).First().Key;
             return x;
         }
 
-        public int GetSmallestNonFittingNumeralValue(int input)
-        {
-            var x = Numerals.Where(x => x.Value >= input).OrderBy(x => x.Value).First().Value;
-            return x;
-        }
-
+        /// <summary>
+        /// Gets the subtractive candidate (where a smaller value subtracts from the higher next value).
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
         public string GetSubtractiveCandidate(int input)
         {
             string output = string.Empty;
@@ -119,12 +123,6 @@ namespace Innumerati.Processes.Implementations
             return output;
         }
 
-        public bool IsValidInteger(int input)
-        {
-            return input > 0
-                && input < 4000;
-        }
-
         /// <summary>
         /// Determines whether the input is a valid roman numeral string.
         /// Validations from: https://www.cuemath.com/numbers/roman-numerals/ (Rules for Writing Roman Numerals)
@@ -152,6 +150,10 @@ namespace Innumerati.Processes.Implementations
             return false;
         }
 
+        /// <summary>
+        /// Lists all the roman numerals.
+        /// </summary>
+        /// <returns></returns>
         public Dictionary<int, string> ListAll()
         {
             Dictionary<int, string> output = new Dictionary<int, string>();
@@ -267,6 +269,23 @@ namespace Innumerati.Processes.Implementations
                 {"D", 500},
                 {"M", 1000},
             };
+        }
+
+        /// <summary>
+        /// Gets the smallest numeral value that is larger than or equal to the input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns></returns>
+        private int GetSmallestNonFittingNumeralValue(int input)
+        {
+            var x = Numerals.Where(x => x.Value >= input).OrderBy(x => x.Value).First().Value;
+            return x;
+        }
+
+        private bool IsValidInteger(int input)
+        {
+            return input > 0
+                && input < 4000;
         }
 
         private bool IsValidNumeralOccurance(string input)

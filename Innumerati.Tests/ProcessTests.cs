@@ -58,6 +58,7 @@ namespace Innumerati.Tests
         [TestCase("D", 500)]
         [TestCase("M", 1000)]
         [TestCase("MM", 2000)]
+        [TestCase("MMMCMXCIX", 3999)]
         public void TestBasicNumeralToInt_ReturnsExactMatchedIntegrals(string input, int expected)
         {
             Assert.AreEqual(expected, _processor.NumeralsToInt(input));
@@ -81,6 +82,12 @@ namespace Innumerati.Tests
         public void TestGetLargestFittingNumeralFromInt_ReturnsTheLargestNumeralSmallerThanOrEqualToInt(int input, string expected)
         {
             Assert.AreEqual(expected, _processor.GetLargestFittingNumeral(input));
+        }
+
+        [Test]
+        public void TestListAll_Expects3999()
+        {
+            Assert.AreEqual(3999, _processor.ListAll().Count);
         }
 
         [Test]
