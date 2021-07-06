@@ -34,7 +34,13 @@ namespace Innumerati.Processes.Implementations
         /// <returns>The roman numeral string that represents the integer</returns>
         public string IntToNumerals(int input)
         {
+            if (!IsValidInteger(input))
+            {
+                throw new System.InvalidOperationException("This is an invalid input");
+            }
+
             var working = input;
+
             string output = string.Empty;
 
             while (working > 0)
@@ -50,6 +56,12 @@ namespace Innumerati.Processes.Implementations
                 throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
             }
             return output;
+        }
+
+        public bool IsValidInteger(int input)
+        {
+            return input > 0
+                && input < 4000;
         }
 
         /// <summary>
@@ -100,6 +112,13 @@ namespace Innumerati.Processes.Implementations
             {
                 var working = CharToString(workingChar);
                 workingValue += Numerals[working];
+            }
+
+            if (!IsValidInteger(workingValue))
+            {
+                // this is here for paranoia's sake and should not generally be possible to reach.
+                // It could be reachable, if the code or memory was tampered with though
+                throw new System.InvalidOperationException("This roman numeral produces an invalid integer");
             }
             return workingValue;
         }
