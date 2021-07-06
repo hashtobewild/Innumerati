@@ -3,6 +3,7 @@ using Innumerati.Processes.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Innumerati
 {
@@ -19,7 +20,18 @@ namespace Innumerati
 
         public void Run()
         {
-            _logger.LogInformation("Int to Numeral" + _romanNumerals.NumeralsToInt("IV"));
+            _logger.LogInformation("Test " + _romanNumerals.IntToNumerals(39));
+            foreach (var item in _romanNumerals.ListAll())
+            {
+                try
+                {
+                    Console.WriteLine(item.Key.ToString() + ": " + item.Value);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                }
+            }
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)

@@ -14,6 +14,8 @@ namespace Innumerati.Processes.Interfaces
 
         bool IsValidRomanNumeral(string input);
 
+        Dictionary<int, string> ListAll();
+
         int NumeralsToInt(string input);
     }
 }

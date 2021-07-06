@@ -46,7 +46,7 @@ namespace Innumerati.Processes.Implementations
                 var previousNumeralValue = Numerals[largestFitting];
                 var delta = nextNumeralValue - input;
                 if (
-                    input != 4 // fixed exception to the rules
+                    input != 4 // fixed exception to the rules...
                     && (delta <= 0
                     || delta >= input
                     || delta > previousNumeralValue
@@ -54,15 +54,15 @@ namespace Innumerati.Processes.Implementations
                 {
                     return output;
                 }
-                else if (delta == 1 && smallestNonFitting != "I")
+                else if (delta == Numerals["I"] && smallestNonFitting != "I")
                 {
                     output = "I" + smallestNonFitting;
                 }
-                else if (delta <= 10 && smallestNonFitting != "X")
+                else if (delta <= Numerals["X"] && smallestNonFitting != "X")
                 {
                     output = "X" + smallestNonFitting;
                 }
-                else if (delta > 10 && delta <= 100 && smallestNonFitting != "C")
+                else if (delta > Numerals["X"] && delta <= Numerals["C"] && smallestNonFitting != "C")
                 {
                     output = "C" + smallestNonFitting;
                 }
@@ -88,9 +88,9 @@ namespace Innumerati.Processes.Implementations
 
             while (working > 0)
             {
-                string temp = string.Empty;
+                string temp;
                 var sub = GetSubtractiveCandidate(working);
-                int deduction = 0;
+                int deduction;
                 if (!string.IsNullOrEmpty(sub))
                 {
                     temp = sub;
@@ -114,7 +114,7 @@ namespace Innumerati.Processes.Implementations
             // Sanity check
             if (!IsValidRomanNumeral(output))
             {
-                //throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
+                throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
             }
             return output;
         }
@@ -150,6 +150,16 @@ namespace Innumerati.Processes.Implementations
                 }
             }
             return false;
+        }
+
+        public Dictionary<int, string> ListAll()
+        {
+            Dictionary<int, string> output = new Dictionary<int, string>();
+            for (int i = 1; i < 4000; i++)
+            {
+                output[i] = IntToNumerals(i);
+            }
+            return output;
         }
 
         /// <summary>
@@ -206,6 +216,34 @@ namespace Innumerati.Processes.Implementations
             return new string(new char[] { input });
         }
 
+        private bool ContiguousCharMaxCheck(string haystack, char input, int count)
+        {
+            bool output = true;
+            int found = 0;
+            int length = haystack.Length;
+
+            for (int i = 0; i < length; i++)
+            {
+                if (haystack[i] == input)
+                {
+                    if (found + 1 <= count)
+                    {
+                        found++;
+                    }
+                    else
+                    {
+                        output = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    found = 0;
+                }
+            }
+            return output;
+        }
+
         /// <summary>
         /// Initializes the default values /set initial state
         /// </summary>
@@ -227,13 +265,14 @@ namespace Innumerati.Processes.Implementations
         {
             return
                 // L,V,D cannot repeat:
-                input.Count(x => x == 'L') <= 1
-                && input.Count(x => x == 'V') <= 1
-                && input.Count(x => x == 'D') <= 1
+                ContiguousCharMaxCheck(input, 'L', 1)
+                && ContiguousCharMaxCheck(input, 'V', 1)
+                && ContiguousCharMaxCheck(input, 'D', 1)
+
                 // I,X,C can be repeated max 3 times
-                && input.Count(x => x == 'I') <= 3
-                && input.Count(x => x == 'X') <= 3
-                && input.Count(x => x == 'C') <= 3;
+                && ContiguousCharMaxCheck(input, 'I', 3)
+                && ContiguousCharMaxCheck(input, 'X', 3)
+                && ContiguousCharMaxCheck(input, 'C', 3);
         }
 
         private bool IsValidNumeralOrdering(char[] inputArray)
