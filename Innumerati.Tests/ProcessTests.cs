@@ -49,6 +49,7 @@ namespace Innumerati.Tests
         [TestCase("VI", 6)]
         [TestCase("X", 10)]
         [TestCase("XI", 11)]
+        [TestCase("XXXIX", 39)]
         [TestCase("L", 50)]
         [TestCase("LX", 60)]
         [TestCase("XC", 90)]

@@ -193,7 +193,8 @@ namespace Innumerati.Processes.Implementations
                 {
                     // Subtractive
                     lookedUp -= lastValue;
-                    workingValue = lookedUp;
+                    workingValue -= lastValue;
+                    workingValue += lookedUp;
                 }
             }
 
