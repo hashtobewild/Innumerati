@@ -8,6 +8,8 @@ namespace Innumerati.Processes.Interfaces
 
         string GetLargestFittingNumeral(int input);
 
+        string GetSubtractiveCandidate(int input);
+
         string IntToNumerals(int input);
 
         bool IsValidRomanNumeral(string input);

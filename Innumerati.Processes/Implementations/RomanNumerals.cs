@@ -30,7 +30,7 @@ namespace Innumerati.Processes.Implementations
 
         public int GetSmallestNonFittingNumeralValue(int input)
         {
-            var x = Numerals.Where(x => x.Value >= input).OrderByDescending(x => x.Value).First().Value;
+            var x = Numerals.Where(x => x.Value >= input).OrderBy(x => x.Value).First().Value;
             return x;
         }
 
@@ -38,22 +38,31 @@ namespace Innumerati.Processes.Implementations
         {
             string output = string.Empty;
 
-            if (input >= Numerals.Values.Min() && input < Numerals.Values.Max())
+            if (input >= 3 && input < Numerals.Values.Max())
             {
                 var nextNumeralValue = GetSmallestNonFittingNumeralValue(input);
                 var smallestNonFitting = Numerals.First(x => x.Value == nextNumeralValue).Key;
                 var largestFitting = GetLargestFittingNumeral(input);
                 var previousNumeralValue = Numerals[largestFitting];
                 var delta = nextNumeralValue - input;
-                if (delta == 1)
+                if (
+                    input != 4 // fixed exception to the rules
+                    && (delta <= 0
+                    || delta >= input
+                    || (delta > previousNumeralValue /*&& (input / previousNumeralValue > 3)*/)
+                    ))
+                {
+                    return output;
+                }
+                else if (delta == 1 && smallestNonFitting != "I")
                 {
                     output = "I" + smallestNonFitting;
                 }
-                else if (delta <= 10)
+                else if (delta <= 10 && smallestNonFitting != "X")
                 {
                     output = "X" + smallestNonFitting;
                 }
-                else if (delta <= 100)
+                else if (delta > 10 && delta <= 100 && smallestNonFitting != "C")
                 {
                     output = "C" + smallestNonFitting;
                 }
@@ -81,17 +90,25 @@ namespace Innumerati.Processes.Implementations
             {
                 string temp = string.Empty;
                 var sub = GetSubtractiveCandidate(working);
+                int deduction = 0;
                 if (!string.IsNullOrEmpty(sub))
                 {
                     temp = sub;
+                    var major = Numerals[CharToString(temp.Last())];
+                    for (int i = 0; i < temp.Length - 1; i++)
+                    {
+                        major -= Numerals[CharToString(temp[i])];
+                    }
+                    deduction = major;
                 }
                 else
                 {
                     temp = GetLargestFittingNumeral(working);
+                    deduction = Numerals[temp];
                 }
 
                 output += temp;
-                working -= Numerals[temp];
+                working -= deduction;
             }
 
             // Sanity check
