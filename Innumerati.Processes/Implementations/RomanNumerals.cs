@@ -171,7 +171,7 @@ namespace Innumerati.Processes.Implementations
         {
             if (!IsValidRomanNumeral(input))
             {
-                throw new System.InvalidOperationException("Invalid Roman Numeral String");
+                throw new System.InvalidOperationException("Invalid roman numeral string");
             }
 
             // Add character items to a FIFO queue
