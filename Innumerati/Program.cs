@@ -1,12 +1,41 @@
-﻿using System;
+﻿using Innumerati.Processes.Implementations;
+using Innumerati.Processes.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Innumerati
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        private ILogger<Program> _logger;
+        private IRomanNumerals _romanNumerals;
+
+        public Program(ILogger<Program> logger, IRomanNumerals romanNumerals)
         {
-            Console.WriteLine("Hello World!");
+            _romanNumerals = romanNumerals;
+            _logger = logger;
+        }
+
+        public void Run()
+        {
+            _logger.LogInformation("Hello World!");
+        }
+
+        private static IHostBuilder CreateHostBuilder(string[] args)
+        {
+            return Host.CreateDefaultBuilder(args).ConfigureServices(
+                services =>
+                {
+                    services.AddTransient<Program>();
+                    services.AddTransient<IRomanNumerals, RomanNumerals>();
+                });
+        }
+
+        private static void Main(string[] args)
+        {
+            var host = CreateHostBuilder(args).Build();
+            host.Services.GetRequiredService<Program>().Run();
         }
     }
 }

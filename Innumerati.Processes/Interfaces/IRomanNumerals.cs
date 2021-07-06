@@ -2,7 +2,7 @@
 
 namespace Innumerati.Processes.Interfaces
 {
-    internal interface IRomanNumerals
+    public interface IRomanNumerals
     {
         Dictionary<string, int> Numerals { get; set; }
 
