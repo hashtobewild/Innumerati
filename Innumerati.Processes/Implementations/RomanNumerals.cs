@@ -49,7 +49,7 @@ namespace Innumerati.Processes.Implementations
                     input != 4 // fixed exception to the rules
                     && (delta <= 0
                     || delta >= input
-                    || (delta > previousNumeralValue /*&& (input / previousNumeralValue > 3)*/)
+                    || delta > previousNumeralValue
                     ))
                 {
                     return output;
