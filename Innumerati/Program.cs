@@ -19,7 +19,7 @@ namespace Innumerati
 
         public void Run()
         {
-            _logger.LogInformation("Int to Numeral" + _romanNumerals.IntToNumerals(40));
+            _logger.LogInformation("Int to Numeral" + _romanNumerals.NumeralsToInt("IV"));
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args)

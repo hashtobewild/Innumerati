@@ -169,10 +169,22 @@ namespace Innumerati.Processes.Implementations
 
             char workingChar;
             int workingValue = 0;
+            int lastValue = 0;
             while (queue.TryDequeue(out workingChar))
             {
                 var working = CharToString(workingChar);
-                workingValue += Numerals[working];
+                var lookedUp = Numerals[working];
+                if (lastValue == 0 /* first run*/ || lastValue >= lookedUp /* additive */)
+                {
+                    lastValue = lookedUp;
+                    workingValue += lookedUp;
+                }
+                else
+                {
+                    // Subtractive
+                    lookedUp -= lastValue;
+                    workingValue = lookedUp;
+                }
             }
 
             if (!IsValidInteger(workingValue))
