@@ -1,4 +1,5 @@
 ﻿using Innumerati.Processes.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +28,39 @@ namespace Innumerati.Processes.Implementations
             return x;
         }
 
+        public int GetSmallestNonFittingNumeralValue(int input)
+        {
+            var x = Numerals.Where(x => x.Value >= input).OrderByDescending(x => x.Value).First().Value;
+            return x;
+        }
+
+        public string GetSubtractiveCandidate(int input)
+        {
+            string output = string.Empty;
+
+            if (input >= Numerals.Values.Min() && input < Numerals.Values.Max())
+            {
+                var nextNumeralValue = GetSmallestNonFittingNumeralValue(input);
+                var smallestNonFitting = Numerals.First(x => x.Value == nextNumeralValue).Key;
+                var largestFitting = GetLargestFittingNumeral(input);
+                var previousNumeralValue = Numerals[largestFitting];
+                var delta = nextNumeralValue - input;
+                if (delta == 1)
+                {
+                    output = "I" + smallestNonFitting;
+                }
+                else if (delta <= 10)
+                {
+                    output = "X" + smallestNonFitting;
+                }
+                else if (delta <= 100)
+                {
+                    output = "C" + smallestNonFitting;
+                }
+            }
+            return output;
+        }
+
         /// <summary>
         /// Convert integers to roman numerals.
         /// </summary>
@@ -45,7 +79,17 @@ namespace Innumerati.Processes.Implementations
 
             while (working > 0)
             {
-                var temp = GetLargestFittingNumeral(working);
+                string temp = string.Empty;
+                var sub = GetSubtractiveCandidate(working);
+                if (!string.IsNullOrEmpty(sub))
+                {
+                    temp = sub;
+                }
+                else
+                {
+                    temp = GetLargestFittingNumeral(working);
+                }
+
                 output += temp;
                 working -= Numerals[temp];
             }
@@ -53,7 +97,7 @@ namespace Innumerati.Processes.Implementations
             // Sanity check
             if (!IsValidRomanNumeral(output))
             {
-                throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
+                //throw new System.InvalidOperationException("This number produces an invalid roman numeral sequence");
             }
             return output;
         }
