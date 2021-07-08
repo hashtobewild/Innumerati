@@ -164,7 +164,7 @@ namespace Innumerati.Processes.Implementations
             }
 
             // Add character items to a FIFO queue
-            Queue<char> queue = new Queue<char>(input.ToCharArray());
+            Queue<char> queue = new Queue<char>(input.ToUpperInvariant().ToCharArray());
 
             char workingChar;
             int workingValue = 0;
