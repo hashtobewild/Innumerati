@@ -46,30 +46,17 @@ namespace Innumerati.Processes.Implementations
             {
                 var nextNumeralValue = GetSmallestNonFittingNumeralValue(input);
                 var smallestNonFitting = Numerals.First(x => x.Value == nextNumeralValue).Key;
-                var largestFitting = GetLargestFittingNumeral(input);
+                var largestFitting = GetLargestFittingPowerOfTenNumeral(input);
                 var previousNumeralValue = Numerals[largestFitting];
                 var delta = nextNumeralValue - input;
-                if (
-                    input != 4 // fixed exception to the rules...
-                    && (delta <= 0
+                if (delta <= 0
                     || delta >= input
                     || delta > previousNumeralValue
-                    ))
+                    )
                 {
                     return output;
                 }
-                else if (delta == Numerals["I"] && smallestNonFitting != "I")
-                {
-                    output = "I" + smallestNonFitting;
-                }
-                else if (delta <= Numerals["X"] && smallestNonFitting != "X")
-                {
-                    output = "X" + smallestNonFitting;
-                }
-                else if (delta > Numerals["X"] && delta <= Numerals["C"] && smallestNonFitting != "C")
-                {
-                    output = "C" + smallestNonFitting;
-                }
+                return largestFitting + smallestNonFitting;
             }
             return output;
         }
@@ -269,6 +256,13 @@ namespace Innumerati.Processes.Implementations
                 {"D", 500},
                 {"M", 1000},
             };
+        }
+
+        private string GetLargestFittingPowerOfTenNumeral(int input)
+        {
+            // Limit search to I,X,C, which are powers of 10
+            var x = Numerals.Where(x => (x.Key == "I" || x.Key == "X" || x.Key == "C") && x.Value <= input).OrderByDescending(x => x.Value).First().Key;
+            return x;
         }
 
         /// <summary>
